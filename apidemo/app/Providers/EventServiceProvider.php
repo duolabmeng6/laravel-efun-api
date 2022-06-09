@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Listeners\QueryListener;
+use App\Listeners\SQL语句监听器;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Database\Events\QueryExecuted;
@@ -21,8 +21,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 //        需要写出sql语句日志才打开这个选项~
-//        QueryExecuted::class => [
-//            QueryListener::class,
+//        SQL语句监听器::class => [
+//            SQL语句监听器::class,
 //        ],
     ];
 

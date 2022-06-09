@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\异常处理;
 
-use App\Helpers\ApiResponse;
-use App\Helpers\ResponseEnum;
+use App\帮助类\API返回格式类;
+use App\帮助类\返回状态码;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
-class Handler extends ExceptionHandler
+class 异常处理类 extends ExceptionHandler
 {
-    use ApiResponse;
+    use API返回格式类;
 
     /**
      * A list of the exception types that are not reported.
@@ -49,22 +49,22 @@ class Handler extends ExceptionHandler
     {
         // 如果是生产环境则返回500
         if (!config('app.debug')) {
-            $this->throwBusinessException(ResponseEnum::SYSTEM_ERROR);
+            $this->抛出异常(返回状态码::服务器错误);
         }
         // 请求类型错误异常抛出
         if ($exception instanceof MethodNotAllowedHttpException) {
-            $this->throwBusinessException(ResponseEnum::CLIENT_METHOD_HTTP_TYPE_ERROR);
+            $this->抛出异常(返回状态码::HTTP请求类型错误);
         }
         // 参数校验错误异常抛出
         if ($exception instanceof ValidationException) {
-            $this->throwBusinessException(ResponseEnum::CLIENT_PARAMETER_ERROR);
+            $this->抛出异常(返回状态码::参数错误);
         }
         // 路由不存在异常抛出
         if ($exception instanceof NotFoundHttpException) {
-            $this->throwBusinessException(ResponseEnum::CLIENT_NOT_FOUND_ERROR);
+            $this->抛出异常(返回状态码::没有找到该页面);
         }
         // 自定义错误异常抛出
-        if ($exception instanceof BusinessException) {
+        if ($exception instanceof 业务异常) {
             return response()->json([
                 'status'  => 'fail',
                 'code'    => $exception->getCode(),

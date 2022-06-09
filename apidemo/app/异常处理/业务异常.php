@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\异常处理;
 
 use Exception;
 
-class BusinessException extends Exception
+class 业务异常 extends Exception
 {
     /**
      * 业务异常构造函数

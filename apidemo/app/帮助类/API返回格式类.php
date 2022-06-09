@@ -1,16 +1,16 @@
 <?php
 
 
-namespace App\Helpers;
+namespace App\帮助类;
 
-use App\Helpers\ResponseEnum;
-use App\Exceptions\BusinessException;
+use App\帮助类\返回状态码;
+use App\异常处理\业务异常;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 
-trait ApiResponse
+trait API返回格式类
 {
     /**
      * 成功
@@ -18,9 +18,9 @@ trait ApiResponse
      * @param array $codeResponse
      * @return JsonResponse
      */
-    public function success($data = null, $codeResponse=ResponseEnum::HTTP_OK): JsonResponse
+    public function 成功($data = null, $codeResponse=返回状态码::操作成功): JsonResponse
     {
-        return $this->jsonResponse('success', $codeResponse, $data, null);
+        return $this->返回json('success', $codeResponse, $data, null);
     }
 
     /**
@@ -30,20 +30,20 @@ trait ApiResponse
      * @param null $error
      * @return JsonResponse
      */
-    public function fail($codeResponse=ResponseEnum::HTTP_ERROR, $data = null, $error=null): JsonResponse
+    public function 失败($codeResponse=返回状态码::请求失败, $data = null, $error=null): JsonResponse
     {
-        return $this->jsonResponse('fail', $codeResponse, $data, $error);
+        return $this->返回json('fail', $codeResponse, $data, $error);
     }
 
     /**
-     * json响应
+     * 返回json
      * @param $status
      * @param $codeResponse
      * @param $data
      * @param $error
      * @return JsonResponse
      */
-    private function jsonResponse($status, $codeResponse, $data, $error): JsonResponse
+    private function 返回json($status, $codeResponse, $data, $error): JsonResponse
     {
         list($code, $message) = $codeResponse;
         return response()->json([
@@ -61,12 +61,12 @@ trait ApiResponse
      * @param $page
      * @return JsonResponse
      */
-    protected function successPaginate($page): JsonResponse
+    protected function 成功分页($page): JsonResponse
     {
-        return $this->success($this->paginate($page));
+        return $this->成功($this->分页($page));
     }
 
-    private function paginate($page)
+    private function 分页($page)
     {
         if ($page instanceof LengthAwarePaginator){
             return [
@@ -97,10 +97,10 @@ trait ApiResponse
      * 业务异常返回
      * @param array $codeResponse
      * @param string $info
-     * @throws BusinessException
+     * @throws 业务异常
      */
-    public function throwBusinessException(array $codeResponse=ResponseEnum::HTTP_ERROR, string $info = '')
+    public function 抛出异常(array $codeResponse=返回状态码::请求失败, string $info = '')
     {
-        throw new BusinessException($codeResponse, $info);
+        throw new 业务异常($codeResponse, $info);
     }
 }

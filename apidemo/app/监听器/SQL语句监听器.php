@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Listeners;
+namespace App\监听器;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
-class QueryListener
+class SQL语句监听器
 {
     /**
      * Create the event listener.

@@ -54,38 +54,38 @@ php artisan ide-helper:models
 
 1、返回成功信息
 ```php
-return $this->success($data);
+return $this->成功($data);
 ```
 2、返回失败信息
 ```php
-return $this->fail($codeResponse);
+return $this->失败($codeResponse);
 ```
 3、抛出异常
 ```php
-$this->throwBusinessException($codeResponse);
+$this->抛出异常($codeResponse);
 ```
 4、分页
 ```php
-return $this->successPaginate($data);
+return $this->成功分页($data);
 ```
 ## 统一表单参数输入校验
 
 ### 使用
 1、验证参数是否为ID
 ```php
-$this->verifyId('key');
+$this->验证Id('key');
 ```
 2、验证参数是否为整数
 ```php
-$this->verifyInteger('key');
+$this->验证是否为整数('key');
 ```
 3、验证参数是否为字符串
 ```php
-$this->verifyString('key');
+$this->验证是否为数字('key');
 ```
 4、验证参数是否为布尔值
 ```php
-$this->verifyBoolean('key');
+$this->验证是否为布尔值('key');
 ```
 ....
 
@@ -94,7 +94,7 @@ $this->verifyBoolean('key');
 ```php
 public function index()
 {
-    $id = $this->verifyId('id', null);
+    $id = $this->验证Id('id', null);
 }
 ```
 当我们请求时，因为传入的参数是字符串
@@ -105,24 +105,25 @@ http://127.0.0.1:8000/api/user/index?id=xddd
 
 ![Laravel9 开发 API 总结](https://cdn.learnku.com/uploads/images/202203/15/69325/73Yf2SI32F.png!large)
 
-## 服务层 Service
-如果项目比较小，接口较少，业务逻辑放在 controller 和 model 层就可以。否则就需要创建一个 Service 层来存放一些较复杂些的业务逻辑。
-一、在 ```app``` 目录下，创建名叫 ```Services``` 的文件夹
+## 服务类
+如果项目比较小，接口较少，业务逻辑放在 controller 和 model 层就可以。否则就需要创建一个 服务类 层来存放一些较复杂些的业务逻辑。
+一、在 ```app``` 目录下，创建名叫 ```帮助类``` 的文件夹
 
 ![Laravel 开发 API 心得](https://cdn.learnku.com/uploads/images/202203/16/69325/GSPYII6h0q.png!large)
 
-二、在新创建的 ```Services``` 目录下创建基类 ```BaseService.php``` ，采用单例模式避免对内存造成浪费，也方便调用
+二、在新创建的 ```帮助类``` 目录下创建基类 ```基础服务类.php``` ，采用单例模式避免对内存造成浪费，也方便调用
+
 ```php
 <?php
 
-namespace App\Services;
+namespace App\帮助类;
 
-use App\Helpers\ApiResponse;
+use App\Helpers\API返回格式类;
 
-class BaseService
+class 基础服务类
 {
     // 引入api统一返回消息
-    use ApiResponse;
+    use API返回格式类;
 
     protected static $instance;
 
@@ -144,15 +145,16 @@ class BaseService
 ```
 三、使用
 例如要实现一个获取用户信息的功能
-1、在 Service 层创建一个 ```UserService.php``` 的文件
+1、在 服务类 层创建一个 ```用户服务类.php``` 的文件
+
 ```php
 <?php
 
-namespace App\Services;
+namespace App\帮助类;
 
-use App\Services\BaseService;
+use App\帮助类\基础服务类;
 
-class UserService extends BaseService
+class 用户服务类 extends 基础服务类
 {
     // 获取用户信息
     public function getUserInfo()
@@ -162,14 +164,15 @@ class UserService extends BaseService
 
 }
 ```
-2、在控制器 ```UserController``` 中增加一个 ```info``` 方法，并调用服务层中的 getUserInfo() 方法
-```php
-use App\Services\UserService;
+2、在控制器 ```用户控制器``` 中增加一个 ```获取用户信息``` 方法，并调用服务层中的 getUserInfo() 方法
 
-public function info()
+```php
+use App\帮助类\用户服务类;
+
+public function 获取用户信息()
 {
-    $user = UserService::getInstance()->getUserInfo();
-    return $this->success($user);
+    $user = 用户服务类::取单例对象()->获取用户信息();
+    return $this->成功($user);
 }
 ```
 3、返回
